@@ -1,0 +1,167 @@
+<section class="container" style="margin-top: 100px; ">
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']" >Home</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/sports']" >Sports</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Booking</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-md-7 p-4">
+    <div class="card">
+    <h3 class="card-header">{{ selectedSport.location?.name }}</h3>
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Sports</label>
+            <div class="col-sm-10">
+              <ng-multiselect-dropdown
+                formControlName="sport"
+                [placeholder]="'Select Sport'"
+                [settings]="dropdownSettings"
+                [data]="dropDownData"
+                [(ngModel)]="selectedItems"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              ></ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Court</label>
+            <div class="col-sm-10">
+            <ng-multiselect-dropdown
+                formControlName="courts"
+                [placeholder]="'Select Courts'"
+                [settings]="dropdownSettings"
+                [data]="courts"
+                [(ngModel)]="selectedCourts"
+                (onSelect)="onItemCourtSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              ></ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Select Date</label>
+            <div class="col-sm-10">
+              <input type="text" placeholder="Datepicker" (bsValueChange)="onDateValueChange($event)" class="form-control" bsDatepicker [minDate]="minDate" [maxDate]="maxDate">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Start Time</label>
+            <div class="col-sm-10">
+            <ng-multiselect-dropdown
+                formControlName="timeSlot"
+                [placeholder]="'Select Time Slot'"
+                [settings]="dropdownSettings"
+                [data]="timeSlotData"
+                [(ngModel)]="selectedTimeItems"
+                (onSelect)="onItemSlotSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              ></ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Duration</label>
+            <div class="col-sm-10">
+              <div class="wrapper">
+                <button class="plusminus" (click)="handleMinus()">-</button>
+                <input type="number" class="" value="0" [(ngModel)]="noOfHours" [ngModelOptions]="{standalone: true}" />
+                <button class="plusminus" (click)="handlePlus()">+</button>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+              <button type="button" class="btn btn-primary" (click)="addToCart()" [disabled]="cartDisable">Add To Cart</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5 p-4">
+    <div class="card" *ngIf="cartItem.length > 0">
+      <h3 class="card-header">CART <span class="pull-right" (click)="deleteCart()"><i class="fa fa-trash-o"></i></span></h3>
+      <div class="card-body" *ngFor="let item of cartItem">
+        <h5 class="card-title"><i class="fa fa-gamepad" aria-hidden="true"></i> {{ item.gameName }}</h5>
+        <h5 class="card-title"><i class="fa fa-home" aria-hidden="true"></i> {{ item.court }}</h5>
+        <h5 class="card-title"><i class="fa fa-calendar" aria-hidden="true"></i> {{ item.date }}</h5>
+        <h5 class="card-title"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ item.time }}</h5>
+        <h5 class="card-title"><i class="fa fa-money" aria-hidden="true"></i> {{ item.price }}</h5>
+      </div>
+      <div class="card-footer bg-transparent">
+        <button type="button" class="btn btn-primary pull-right" (click)="paymentModal()">Proceed for payment of {{cartItem[0].price}}</button>
+      </div>
+    </div>
+    <div class="card emptyCart" *ngIf="cartItem.length == 0">
+      <i class="fa fa-shopping-cart fa-3x" aria-hidden="true"></i>
+      <span class="text-center">Your cart is empty</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-left">Payment</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="staticModal.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{ QRCode }}" height="250px" />
+          </div>
+          <div class="col-md-6">
+          <div class="row">
+            <div class="col-sm-12 mb-3 mb-sm-0">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Note</h5>
+                  <p class="card-text">Enter your transaction id after the payment.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 mt-3">
+            <label for="exampleFormControlInput1" class="form-label">Enter Transaction Id</label>
+            <input type="text" class="form-control" [(ngModel)]="transactionId" value="" (keyup)="validateTransaction()">
+            <div *ngIf="transactionRequired">
+              Transaction Id is required.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-primary" type="button" (click)="finalPayment(template)">Make Payment & Submit</button>
+          </div>
+          </div>
+        </div>
+        <!-- <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Enter transaction id after payment</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+          <small>The payment will be verified soon & informed via email.</small>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Payment confirmation</h4>
+    <button type="button" class="close btn-close pull-right" aria-label="Close" (click)="closeSucModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Thank you for the payment. You will receive the booking confirmation to your id provided.
+  </div>
+</ng-template>

@@ -1,0 +1,71 @@
+<section class="container" style="margin-top: 100px; ">
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']" >Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <h5 class="card-header">Update Profile</h5>
+      <div class="card-body row">
+        <div class="col-md-4">
+          <div class="m-auto text-center">
+            <img src="/assets/img/profile-circle.png" alt="" width="60%"/>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <form [formGroup]="profileForm">
+
+            <div class="row">
+              <div class="col">
+                <label for="formGroupExampleInput" class="form-label">First name</label>
+                <input type="text" class="form-control" formControlName="first_name" placeholder="First name" aria-label="First name" (keyup)="validateField('first_name')" (focusout)="validateField('first_name')">
+                <div class="validation-error" *ngIf="firstNameRequired">
+                    First name is required
+                </div>
+              </div>
+              <div class="col">
+                <label for="formGroupExampleInput" class="form-label">Last name</label>
+                <input type="text" class="form-control" formControlName="last_name" placeholder="Last name" aria-label="Last name" (keyup)="validateField('last_name')" (focusout)="validateField('last_name')">
+                <div class="validation-error" *ngIf="lastNameRequired">
+                    Last name is required
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col">
+                <label for="formGroupExampleInput" class="form-label">Email address</label>
+                <input type="text" class="form-control" placeholder="Enter email" formControlName="email" aria-label="First name" readonly >
+              </div>
+              <div class="col">
+                <label for="formGroupExampleInput" class="form-label">Phone</label>
+                <input type="text" class="form-control" placeholder="Phone number" formControlName="mobile" aria-label="Last name" (keyup)="validateField('mobile')" (focusout)="validateField('mobile')">
+                <div class="validation-error" *ngIf="mobileRequired">
+                    Mobile is required
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col">
+                <label for="formGroupExampleInput" class="form-label">Address</label>
+                <textarea class="form-control" placeholder="Enter address" formControlName="address" aria-label="First name"></textarea>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col">
+                <button type="button" class="btn btn-primary pull-right" (click)="updateForm()">Update Profile</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="alert alert-{{profileUpdate.status}} alert-dismissible {{profileUpdate.show}} fade mt-2" role="alert" *ngIf="showAlert">
+            {{profileUpdate.message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

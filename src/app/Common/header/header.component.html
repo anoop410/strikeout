@@ -1,0 +1,78 @@
+<header>
+  <nav id="stickynav">
+    <div class="logo">
+      <a [routerLink]="['/']"><img src="../assets/img/logo1.png" style="height: 100px; width: 600px;" alt="Sport Template"></a>
+    </div>
+    <ul class="list-inline-item ">
+      <li ><a [routerLink]="['/']" routerLinkActive="router-link-active" >HOME</a></li>
+      <li ><a [routerLink]="['/sports']" routerLinkActive="router-link-active" >SPORTS</a></li>
+      <li><a [routerLink]="['/booking']" routerLinkActive="router-link-active" >BOOK</a></li>
+      <li *ngIf="userLoggedIn">
+      <span dropdown >
+        <a href id="basic-link" dropdownToggle (click)="false"
+          aria-controls="basic-link-dropdown"><i class="fa fa-user-md"></i></a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="basic-link">
+          <li *ngFor="let choice of items">
+            <a class="dropdown-item" [routerLink]="[choice.url]">{{choice.name}}</a>
+          </li>
+        </ul>
+      </span>
+      </li>
+      <li><a href="javascript:;" (click)="showLoginModal()" *ngIf="!userLoggedIn">Login / SignUp</a></li>
+      <li><a href="javascript:;" (click)="logout()" *ngIf="userLoggedIn">Logout</a></li>
+    </ul>
+  </nav>
+  <div class="nav-mobile">
+    <ul class="nav-mobile-menu">
+      <li class="active"><a href="index-2.html">HOME</a></li>
+      <li><div>PLAY<i class="fa fa-chevron-right"></i></div>
+
+      </li>
+      <li><div>BOOK<i class="fa fa-chevron-right"></i></div></li>
+      <li><a href="javascript:;" (click)="showLoginModal()" *ngIf="!userLoggedIn">Login / SignUp</a></li>
+      <li><a href="javascript:;" (click)="logout()" *ngIf="userLoggedIn">Logout</a></li>
+    </ul>
+
+  </div>
+  <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" *ngIf="hideSlider">
+
+  <carousel [isAnimated]="true">
+    <slide *ngFor="let item of carousel">
+      <img src="{{ item.image }}" alt="first slide" style="display: block; width: 100%;">
+    </slide>
+  </carousel>
+    </div>
+</header>
+
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Login / SignUp</h4>
+        <button type="button" class="btn-close close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form [formGroup]="loginForm" *ngIf="loginDiv">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" formControlName="email" name="email" aria-describedby="emailHelp" placeholder="Enter email address" [readonly]="showOTPBox">
+        </div>
+        <div class="mb-3" *ngIf="showOTPBox">
+          <label for="exampleInputEmail1" class="form-label">Enter OTP</label>
+          <input type="email" class="form-control" id="otp" formControlName="otp" name="otp" aria-describedby="emailHelp" placeholder="Enter OTP">
+        </div>
+        <button type="button" class="btn btn-primary pull-right" *ngIf="!showOTPBox" (click)="login()">Submit</button>
+        <button type="button" class="btn btn-primary pull-right" *ngIf="showOTPBox" (click)="loginOTP()">Submit</button>
+      </form>
+
+      <alert type="alert.type" *ngIf="showAlert">
+        <strong>{{alert.head}}</strong> {{alert.message}}
+      </alert>
+      </div>
+    </div>
+  </div>
+</div>

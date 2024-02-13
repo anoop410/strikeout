@@ -1,0 +1,14 @@
+<section class="container-fluid" style="margin-top: 100px; ">
+  <div class="row" >
+    <div class="col-md-3 sportsCard" *ngFor="let sports of allSports" >
+      <div class="card" style="width: 18rem;" >
+        <img src="https://lucky-kleicha-859d19.netlify.app/img/7Strikers1702627628635.webp" class="card-img-top" alt="..." >
+        <div class="card-body">
+          <h5 class="card-title"><a href="javascript:;" (click)="openSport(sports)">{{ sports.name }}</a> <span class="pull-right"><i class="fa fa-star"></i> 5</span></h5>
+          <p class="card-text"><i class="fa fa-map-marker fa-lg"></i> {{ sports.location.name }}</p>
+          <p class="card-text"><i class="fa fa-clock-o fa-lg"></i> {{ sports.location.time }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

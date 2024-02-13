@@ -1,0 +1,32 @@
+<section class="container" style="margin-top: 100px; ">
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']" >Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Bookings</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <h5 class="card-header">My Bookings</h5>
+      <div class="card-body row">
+      <div class="row">
+
+        <div class="col-sm-6 mb-3 mb-sm-0" *ngFor="let item of allBookings">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Booking Id: {{ item.order_id }}</h5>
+              <h5 class="card-title"><i class="fa fa-gamepad" aria-hidden="true"></i> {{ item.sport }}</h5>
+              <h5 class="card-title"><i class="fa fa-home" aria-hidden="true"></i> {{ item.court }}</h5>
+              <h5 class="card-title"><i class="fa fa-calendar" aria-hidden="true"></i> {{ item.sport_booking_date }}</h5>
+              <h5 class="card-title"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ item.slot_start_time }} - {{ item.slot_end_time }}</h5>
+              <h5 class="card-title"><i class="fa fa-money" aria-hidden="true"></i> {{ item.total }}/-</h5>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

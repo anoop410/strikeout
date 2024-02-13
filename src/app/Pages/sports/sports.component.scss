@@ -1,0 +1,14 @@
+.sportsCard .card{
+  box-shadow: 0 10px 15px 0 #0000001a;
+  border-radius: 0.5rem;
+  --tw-border-opacity: 0.2;
+}
+
+.sportsCard .card:hover{
+  transition: transform .5s ease;
+  transform: scale(1.1);
+}
+
+.card-text{
+  margin-bottom: 2px !important;
+}
