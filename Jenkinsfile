@@ -5,7 +5,6 @@ pipeline {
         }
     }
     environment {
-        GIT_CREDENTIALS = credentials('github-jenkins')
         DOCKER_IMAGE_NAME = 'strikeout'
         DOCKER_IMAGE_TAG = 'latest'
     }
@@ -14,7 +13,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/anoop410/strikeout.git', credentialsId: GIT_CREDENTIALS]]])
+                    checkout scm
                 }
             }
         }
