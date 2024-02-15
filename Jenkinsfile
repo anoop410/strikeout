@@ -47,7 +47,7 @@ pipeline {
                 script {
                     docker.image('saianoop410/strikeout').inside {
                         def scannerHome = tool 'sonarqube-scanner'
-                        withSonarQubeEnv('localhost:9000') {
+                        withSonarQubeEnv('sonarqube') {
                             sh "${scannerHome}/bin/sonar-scanner"
                         }
                     }
