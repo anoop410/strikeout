@@ -1,15 +1,20 @@
 # Use the official Node.js 14 Alpine image
-FROM node:18.19.0-alpine3.18
+FROM node:18.19.0-alpine3.18 AS build
 
 # Set the working directory
 WORKDIR /app
-
+# copying .json package
+COPY package*.json ./
 # Install Angular CLI globally
-RUN npm install -g @angular/cli
+RUN npm install
+#RUN ngcc --properties es2023 browser module main --first-only --create-ivy-entry-points
+# COPY ALL the files
+COPY . .
+#RUN BUILD
+RUN npm run build
 
-# Expose the port that ng serve will use
-EXPOSE 4200
-
-# Start ng serve when the container starts
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# nginx docker container to run buld project
+FROM nginx:stable
+COPY --from=build /app/dist/sports-hub /usr/share/nginx/html
+EXPOSE 80
 
