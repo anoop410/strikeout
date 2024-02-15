@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'aws-jenkins-gent'
+            label 'master'
         }
     }
     environment {
