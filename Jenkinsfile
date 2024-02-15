@@ -38,6 +38,7 @@ pipeline {
                     //     }
                     // }
                     withSonarQubeEnv(credentialsId: 'sonarqube') {
+                            SH"npm install sonar-scanner --save-dev"
                             sh "npm run sonar"
                         }
                 }
