@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'master'
+            label 'aws-jenkins-gent'
         }
     }
     environment {
@@ -28,22 +28,6 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // docker.image('saianoop410/strikeout').inside {
-                    //     def scannerHome = tool name: 'sonar_scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation';
-                    //     withSonarQubeEnv('sonarqube') {
-                    //         sh "${scannerHome}/bin/sonar-scanner"
-                    //     }
-                    // }
-                    withSonarQubeEnv(credentialsId: 'sonarqube') {
-                            SH"npm install sonar-scanner --save-dev"
-                            sh "npm run sonar"
-                        }
-                }
-            }
-        }
         stage('Build and Push Docker Images') {
             steps {
                 script {
@@ -53,18 +37,6 @@ pipeline {
                     docker.withRegistry('',DOCKER_PASS){
                         docker_image.push("${DOCKER_IMAGE_TAG}")
                         docker_image.push("latest")
-                    }
-                }
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    docker.image('saianoop410/strikeout').inside {
-                        def scannerHome = tool 'sonarqube-scanner'
-                        withSonarQubeEnv('SonarQube_Server') {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                        }
                     }
                 }
             }
