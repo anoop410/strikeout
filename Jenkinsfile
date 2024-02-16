@@ -57,6 +57,18 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    docker.image('saianoop410/strikeout').inside {
+                        def scannerHome = tool 'sonarqube-scanner'
+                        withSonarQubeEnv('SonarQube_Server') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
